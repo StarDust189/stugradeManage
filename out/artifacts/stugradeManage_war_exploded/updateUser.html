@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新用户密码界面</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#backbtn").click(function () {
+                window.location.href="main.html";
+            })
+            $("#resetbtn").click(function resetBtn(){
+                $("#code").val("");
+            })
+            $("#updatebtn").click(function () {
+                var code=$("#code").val();
+                var password=$("#password").val();
+
+                $.ajax({
+                    url:"updateUser.do",
+                    type:"POST",
+                    data:{
+                        code:code,
+                        password:password
+
+                    },
+                    dataType:"json",
+                    success:function (data) {
+                        var statusCode = data.statusCode;
+                        var msg=data.msg;
+                        if (statusCode == '200') {
+                            alert(msg);
+                            window.location.href = "main.html";
+                        }
+                        if (statusCode == '300') {
+                            $("#info").html(msg);
+                        }
+                    },
+                    error: function () {
+                        alert("系统错误");
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>更新用户密码界面</h2>
+<table>
+    <tr>
+        <td>用户编号：</td>
+        <td><input type="text" id="code"></td>
+    </tr>
+    <tr>
+        <td>密码：</td>
+        <td><input type="text" id="password"></td>
+    </tr>
+    <tr>
+        <td><span id="info"></span></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="更新" id="updatebtn"></td>
+        <td><input type="button" value="重置" id="resetbtn"></td>
+        <td><input type="button" value="返回" id="backbtn"></td>
+    </tr>
+</table>
+</body>
+</html>

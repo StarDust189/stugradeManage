@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息展示界面</title>
+
+</head>
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#backbtn").click(function () {
+            window.location.href="main.html";
+        })
+        $.ajax({
+            url: "getUserList.do",
+            type: "POST",
+            success:function (data) {
+                var obj=eval(data);
+                console.log(obj);
+                $(document).ready(function () {
+                    var s="";
+                    for (var i=0;i<obj.length;i++){
+                        s = "<tr><td>" + obj[i].id + "</td><td>" + obj[i].code + "</td><td>" +
+                            obj[i].name + "</td><td>" + obj[i].password + "</td><td>" + obj[i].grade + "</td></tr>";
+                        $("#tab").append(s);
+                    }
+                })
+            }
+            });
+
+    });
+</script>
+
+<body>
+<h2>用户信息</h2>
+<td><input type="button" value="返回" id="backbtn"></td>
+    <table id="tab" border="1">
+        <tr>
+            <td>用户id</td>
+            <td>用户编号</td>
+            <td>用户名字</td>
+            <td>用户密码</td>
+            <td>等级</td>
+        </tr>
+    </table>
+
+</body>
+</html>

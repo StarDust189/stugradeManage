@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询课程成绩</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#backbtn").click(function () {
+                window.location.href="main.html";
+            })
+            $("#getbtn").click(function () {
+                var courseName=$("#courseName").val();
+
+                $.ajax({
+                    url:"findByCourseName.do",
+                    type:"POST",
+                    data:{
+                        courseName:courseName
+                    },
+                    dataType:"json",
+                    success:function (data) {
+                        var obj=eval(data);
+                        console.log(obj);
+                        $(document).ready(function () {
+                            var s="";
+                            for (var i=0;i<obj.length;i++){
+                                s = "<tr><td>" + obj[i].obj.courseNo + "</td><td>" + obj[i].obj.courseName + "</td><td>" +
+                                    obj[i].obj.grade + "</td><td>" + obj[i].obj.code +"</td></tr>";
+                                $("#tab").append(s);
+                            }
+                        })
+
+                    },
+
+                })
+            })
+        });
+
+    </script>
+</head>
+<body>
+<h2>查询课程成绩界面</h2>
+<table>
+    <tr>
+        <td>课程名字：</td>
+        <td><input type="text" name="courseName" id="courseName"></td>
+        <td><input type="button" value="查询" id="getbtn"> </td>
+        <td><input type="button" value="返回" id="backbtn"></td>
+    </tr>
+    <tr>
+        <td><span id="info"></span></td>
+    </tr>
+
+</table>
+<table id="tab">
+    <tr>
+        <td>课程编号</td>
+        <td>课程名字</td>
+        <td>成绩</td>
+        <td>用户编号</td>
+    </tr>
+</table>
+</body>
+</html>

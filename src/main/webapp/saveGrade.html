@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加成绩</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#addbtn").click(function () {
+                var courseNo = $("#courseNo").val();
+                var courseName = $("#courseName").val();
+                var grade = $("#grade").val();
+                var code = $("#code").val();
+
+                $.ajax({
+                    url: "saveGrade.do",
+                    type: "POST",
+                    data: {
+                        courseNo: courseNo,
+                        courseName: courseName,
+                        grade: grade,
+                        code: code
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        //console.log(data);
+                        var statusCode = data.statusCode;
+                        var msg = data.msg;
+                        if (statusCode == '200') {
+                            alert(msg);
+                            window.location.href = "main.html";
+                        }
+                        if (statusCode == '300') {
+                            $("#info").html(msg);
+                        }
+
+                    },
+                    error: function () {
+                        alert("系统错误");
+                    }
+                })
+            })
+            $("#resetbtn").click(function resetBtn() {
+                $("#courseNo").val("");
+                $("#courseName").val("");
+                $("#grade").val("");
+                $("#code").val("");
+            })
+            $("#backbtn").click(function () {
+                window.location.href = "main.html";
+            })
+        });
+    </script>
+</head>
+
+<body>
+<h2>添加学生成绩界面</h2>
+<table>
+    <tr>
+        <td>课程编号：</td>
+        <td><input type="text" name="courseNo" id="courseNo"></td>
+    </tr>
+    <tr>
+        <td>课程名字：</td>
+        <td><input type="text" name="courseName" id="courseName"></td>
+    </tr>
+    <tr>
+        <td>成绩：</td>
+        <td><input type="text" name="grade" id="grade"></td>
+    </tr>
+    <tr>
+        <td>用户编码：</td>
+        <td><input type="text" name="code" id="code"></td>
+    </tr>
+    <tr>
+        <td><span id="info"></span></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="添加" id="addbtn"></td>
+        <td><input type="button" value="重置" id="resetbtn"></td>
+        <td><input type="button" value="返回" id="backbtn"></td>
+
+    </tr>
+</table>
+</body>
+</html>

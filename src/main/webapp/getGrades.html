@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看学生成绩</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#backbtn").click(function () {
+                window.location.href = "main.html";
+            })
+            $("#getbtn").click(function () {
+                var code = $("#code").val();
+
+                $.ajax({
+                    url: "getgrades.do",
+                    type: "POST",
+                    data: {
+                        code: code
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        var obj = eval(data);
+                        $(document).ready(function () {
+                            var s = "";
+                            for (var i = 0; i < obj.length; i++) {
+                                s = "<tr><td>" + obj[i].courseNo + "</td><td>" + obj[i].courseName + "</td><td>" +
+                                    obj[i].grade + "</td><td>" + obj[i].code + "</td></tr>";
+                                $("#tab").append(s);
+                            }
+                        })
+
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>学生成绩</h2>
+<table>
+    <tr>
+        <td>学生编号：</td>
+        <td><input type="text" id="code"></td>
+        <td><input type="button" value="查询" id="getbtn"></td>
+        <td><input type="button" value="返回" id="backbtn"></td>
+    </tr>
+</table>
+<table id="tab" border="1">
+    <tr>
+        <td>课程编号</td>
+        <td>课程名字</td>
+        <td>成绩</td>
+        <td>用户编号</td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            // alert("页面加载后直接运行");
+            $("#loginbtn").click(function () {
+                // alert("这是点击按钮");
+                var code = $("#code").val();
+                var password = $("#password").val();
+                var grade=$("#grade").val();
+                // alert(code+":"+password);
+                $.ajax({
+                    url: "login.do",
+                    type: "POST",
+                    data: {
+                        code: code,
+                        password: password,
+                        grade:grade
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data);
+                        var statusCode = data.statusCode;
+                        var msg=data.msg;
+                        if (statusCode == "200") {
+                            alert(msg);
+                            window.location.href = "main.html";
+                        }
+                        if (statusCode == "300") {
+                            $("#info").html(msg);
+                        }
+                    },
+                    error: function () {
+                        alert("系统错误");
+                    }
+                });
+            });
+            $("#resetbtn").click(function resetBtn() {
+                $("#code").val("");
+                $("#password").val("");
+                $("#grade").val("");
+            })
+        });
+    </script>
+</head>
+<body>
+<h2>学生用户登陆界面</h2>
+<table>
+    <tr>
+        <td>账户：</td>
+        <td><input type="text" id="code"></td>
+    </tr>
+    <tr>
+        <td>密码：</td>
+        <td><input type="password" name="password" id="password"></td>
+    </tr>
+    <tr>
+        <td>等级：</td>
+        <td><input type="text" name="grade" id="grade"></td>
+    </tr>
+    <tr>
+        <td><span id="info"></span></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="登陆" id="loginbtn"></td>
+        <td><input type="button" value="重置" id="resetbtn"></td>
+    </tr>
+</table>
+
+</body>
+</html>

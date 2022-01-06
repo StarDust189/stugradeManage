@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查找用户</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#backbtn").click(function () {
+                window.location.href = "main.html";
+            })
+            $("#findbtn").click(function () {
+                var name = $("#name").val();
+
+                $.ajax({
+                    url: "findByName.do",
+                    type: "POST",
+                    data: {
+                        name: name
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        var obj = eval(data);
+                        console.log(data);
+                        $(document).ready(function () {
+                            var s = "";
+                            s = "<tr><td>" + data.obj.id + "</td><td>" + data.obj.code + "</td><td>" +
+                                data.obj.name + "</td><td>" + data.obj.password + "</td><td>" + data.obj.grade + "</td></tr>";
+                            $("#tab").append(s);
+
+                        })
+                        var statusCode = data.statusCode;
+                        var msg = data.msg;
+                        if (statusCode == "200") {
+                            alert(msg);
+                        }
+                        if (statusCode == "300") {
+                            $("#info").html(msg);
+                        }
+                    },
+                    error: function () {
+                        alert("系统错误");
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>查找用户界面</h2>
+<table>
+    <tr>
+        <td>用户名字：</td>
+        <td><input type="text" name="name" id="name"></td>
+    </tr>
+    <tr>
+        <td><span id="info"></span></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="查询" id="findbtn"></td>
+        <td><input type="button" value="返回" id="backbtn"></td>
+    </tr>
+</table>
+<table id="tab" border="1">
+    <tr>
+        <td>用户id</td>
+        <td>用户编号</td>
+        <td>用户名字</td>
+        <td>用户密码</td>
+        <td>等级</td>
+    </tr>
+</table>
+</body>
+</html>
